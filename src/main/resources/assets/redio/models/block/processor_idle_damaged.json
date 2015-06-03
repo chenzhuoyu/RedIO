@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "up":       "redio:blocks/processor/idle_damaged/up",
+        "down":     "redio:blocks/processor/idle_damaged/down",
+        "east":     "redio:blocks/processor/idle_damaged/east",
+        "west":     "redio:blocks/processor/idle_damaged/west",
+        "north":    "redio:blocks/processor/idle_damaged/north",
+        "south":    "redio:blocks/processor/idle_damaged/south",
+        "particle": "redio:blocks/processor/idle_damaged/south"
+    }
+}

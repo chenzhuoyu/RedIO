@@ -1,0 +1,23 @@
+{
+    "variants": {
+        "damaged=false,facing=east,working=false":  { "model": "redio:processor_idle", "y": 270 },
+        "damaged=false,facing=west,working=false":  { "model": "redio:processor_idle", "y":  90 },
+        "damaged=false,facing=north,working=false": { "model": "redio:processor_idle", "y": 180 },
+        "damaged=false,facing=south,working=false": { "model": "redio:processor_idle", "y":   0 },
+
+        "damaged=true,facing=east,working=false":   { "model": "redio:processor_idle_damaged", "y": 270 },
+        "damaged=true,facing=west,working=false":   { "model": "redio:processor_idle_damaged", "y":  90 },
+        "damaged=true,facing=north,working=false":  { "model": "redio:processor_idle_damaged", "y": 180 },
+        "damaged=true,facing=south,working=false":  { "model": "redio:processor_idle_damaged", "y":   0 },
+
+        "damaged=false,facing=east,working=true":   { "model": "redio:processor_working", "y": 270 },
+        "damaged=false,facing=west,working=true":   { "model": "redio:processor_working", "y":  90 },
+        "damaged=false,facing=north,working=true":  { "model": "redio:processor_working", "y": 180 },
+        "damaged=false,facing=south,working=true":  { "model": "redio:processor_working", "y":   0 },
+
+        "damaged=true,facing=east,working=true":    { "model": "redio:processor_working_damaged", "y": 270 },
+        "damaged=true,facing=west,working=true":    { "model": "redio:processor_working_damaged", "y":  90 },
+        "damaged=true,facing=north,working=true":   { "model": "redio:processor_working_damaged", "y": 180 },
+        "damaged=true,facing=south,working=true":   { "model": "redio:processor_working_damaged", "y":   0 }
+    }
+}

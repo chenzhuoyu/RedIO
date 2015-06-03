@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "up":       "redio:blocks/processor/working/up",
+        "down":     "redio:blocks/processor/working/down",
+        "east":     "redio:blocks/processor/working/east",
+        "west":     "redio:blocks/processor/working/west",
+        "north":    "redio:blocks/processor/working/north",
+        "south":    "redio:blocks/processor/working/south",
+        "particle": "redio:blocks/processor/working/south"
+    }
+}
