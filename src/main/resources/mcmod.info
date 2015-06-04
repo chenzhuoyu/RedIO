@@ -1,7 +1,7 @@
 [
 {
   "modid": "redio",
-  "name": "Red IO",
+  "name": "RedStone IO",
   "description": "MCU mod for Minecraft",
   "version": "${version}",
   "mcversion": "${mcversion}",

@@ -7,11 +7,12 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.{BlockState, IBlockState}
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.EnumFacing
+import net.minecraft.util.{BlockPos, EnumFacing}
 import net.minecraft.world.World
-import org.oxygen.redio.common.Constants
+import org.oxygen.redio.common.{Utils, Constants}
 import org.oxygen.redio.tileentities.TileEntityProcessor
 
 object BlockProcessor extends
@@ -33,6 +34,12 @@ object BlockProcessor extends
 		val items = subitems.asInstanceOf[util.List[ItemStack]]
 		items.add(new ItemStack(this, 1, Constants.Meta.NORMAL ))
 		items.add(new ItemStack(this, 1, Constants.Meta.DAMAGED))
+	}
+
+	override def onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack): Unit =
+	{
+		val facing = EnumFacing.getHorizontal(Utils.getPlayerFacing(placer))
+		worldIn.setBlockState(pos, state.withProperty(BlockDirectional.FACING, facing))
 	}
 
 	override def getMetaFromState(state: IBlockState): Int =
