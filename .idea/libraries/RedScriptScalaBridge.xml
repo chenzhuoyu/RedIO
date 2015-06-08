@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="RedScriptScalaBridge">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../RedScriptScalaBridge/out/artifacts/RedScriptScalaBridge_jar/RedScriptScalaBridge.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../RedScriptScalaBridge/src" />
+    </SOURCES>
+  </library>
+</component>

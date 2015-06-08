@@ -1,5 +1,5 @@
 {
-    "parent": "redio:block/processor_idle_damaged",
+    "parent": "redio:block/heatsink_gold",
     "display": {
         "thirdperson": {
             "scale": [0.375, 0.375, 0.375],

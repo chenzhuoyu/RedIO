@@ -1,0 +1,47 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "up": "redio:blocks/cable/wwnn",
+        "cap": "redio:blocks/cable/nnnn",
+        "side": "redio:blocks/cable/nnww",
+        "line": "redio:blocks/cable/nwwn",
+        "particle": "redio:blocks/cable/nwwn"
+    },
+    "elements": [{
+        "to": [12, 12, 12],
+        "from": [0, 4, 4],
+        "shade": false,
+        "faces":  {
+            "up":    { "texture": "#line" },
+            "down":  { "texture": "#line" },
+            "east":  { "texture": "#line" },
+            "west":  { "texture": "#line" },
+            "north": { "texture": "#side" },
+            "south": { "texture": "#side" }
+        }
+    }, {
+        "to": [12, 12, 16],
+        "from": [4, 4, 12],
+        "shade": false,
+        "faces":  {
+            "up":    { "texture": "#line" },
+            "down":  { "texture": "#line" },
+            "east":  { "texture": "#side" },
+            "west":  { "texture": "#side" },
+            "north": { "texture": "#line" },
+            "south": { "texture": "#line" }
+        }
+    }, {
+        "to": [12, 16, 12],
+        "from": [4, 12, 4],
+        "shade": false,
+        "faces": {
+            "up":    { "texture": "#cap"  },
+            "down":  { "texture": "#cap"  },
+            "east":  { "texture": "#up"   },
+            "west":  { "texture": "#up"   },
+            "north": { "texture": "#up"   },
+            "south": { "texture": "#up"   }
+        }
+    }]
+}

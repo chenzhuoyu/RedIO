@@ -1,2 +1,9 @@
+tile.cable.name=Cable
+
+tile.heatsink.gold.name=Gold heatsink
+tile.heatsink.iron.name=Iron heatsink
+
 tile.processor.intact.name=Processor
 tile.processor.damaged.name=Processor (damaged)
+
+itemGroup.RedStone IO=RedStone IO

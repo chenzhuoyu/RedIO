@@ -83,5 +83,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="scala-sdk-2.11.6" level="application" />
+    <orderEntry type="library" name="RedScriptScalaBridge" level="project" />
   </component>
 </module>
