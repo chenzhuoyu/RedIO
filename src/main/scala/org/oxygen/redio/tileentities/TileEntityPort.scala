@@ -1,7 +1,5 @@
 package org.oxygen.redio.tileentities
 
-import java.lang
-
 import net.minecraft.block.state.IBlockState
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity

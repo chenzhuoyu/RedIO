@@ -1,12 +1,12 @@
 package org.oxygen.redio.blocks
 
-import net.minecraft.block.state.{IBlockState, BlockState}
+import net.minecraft.block.state.{BlockState, IBlockState}
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.{BlockPos, EnumFacing}
 import net.minecraft.world.World
-import org.oxygen.redio.common.{Utils, Constants}
+import org.oxygen.redio.common.{Constants, Utils}
 
 object BlockProgrammer extends BlockBase(Constants.Materials.Programmer)
 {

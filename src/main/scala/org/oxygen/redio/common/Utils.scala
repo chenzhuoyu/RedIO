@@ -3,13 +3,13 @@ package org.oxygen.redio.common
 import java.lang.reflect.{Field, Method}
 import java.util
 
-import net.minecraft.block.{BlockRedstoneWire, BlockDirectional}
+import net.minecraft.block.BlockRedstoneWire
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.init.Blocks
 import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.item.{Item, ItemStack}
-import net.minecraft.util.{EnumFacing, BlockPos, MathHelper}
+import net.minecraft.util.{BlockPos, EnumFacing, MathHelper}
 import net.minecraft.world.World
 import net.minecraftforge.oredict.ShapedOreRecipe
 
