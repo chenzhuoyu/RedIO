@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powering=true":  { "model": "redio:port_on" },
+        "powering=false": { "model": "redio:port_off" }
+    }
+}

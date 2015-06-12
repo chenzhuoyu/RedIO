@@ -1,0 +1,20 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "line": "redio:blocks/cable/nnnn",
+        "particle": "redio:blocks/cable/nnnn"
+    },
+    "elements": [{
+        "to": [12, 12, 12],
+        "from": [4, 4, 4],
+        "shade": false,
+        "faces": {
+            "up":    { "texture": "#line" },
+            "down":  { "texture": "#line" },
+            "east":  { "texture": "#line" },
+            "west":  { "texture": "#line" },
+            "north": { "texture": "#line" },
+            "south": { "texture": "#line" }
+        }
+    }]
+}

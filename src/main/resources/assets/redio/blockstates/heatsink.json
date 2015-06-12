@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "damaged=true,facing=east":  { "model": "redio:heatsink_gold", "y": 90 },
+        "damaged=true,facing=west":  { "model": "redio:heatsink_gold", "y": 90 },
+        "damaged=true,facing=north": { "model": "redio:heatsink_gold", "y":  0 },
+        "damaged=true,facing=south": { "model": "redio:heatsink_gold", "y":  0 },
+
+        "damaged=false,facing=east":  { "model": "redio:heatsink_iron", "y": 90 },
+        "damaged=false,facing=west":  { "model": "redio:heatsink_iron", "y": 90 },
+        "damaged=false,facing=north": { "model": "redio:heatsink_iron", "y":  0 },
+        "damaged=false,facing=south": { "model": "redio:heatsink_iron", "y":  0 }
+    }
+}

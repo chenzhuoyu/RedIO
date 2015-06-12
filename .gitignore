@@ -1,0 +1,6 @@
+.idea/
+.gradle/
+build/
+eclipse/
+.DS_Store
+

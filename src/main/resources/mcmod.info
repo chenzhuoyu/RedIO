@@ -1,0 +1,16 @@
+[
+{
+  "modid": "redio",
+  "name": "RedStone IO",
+  "description": "MCU mod for Minecraft",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Oxygen"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
