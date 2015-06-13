@@ -1,0 +1,13 @@
+{
+    "parent": "redio:block/programmer",
+    "display": {
+        "firstperson": {
+            "rotation": [0, -45, 0]
+        },
+        "thirdperson": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [10, 0, 170],
+            "translation": [0, 1.5, -2.75]
+        }
+    }
+}

@@ -1,0 +1,19 @@
+gui.name=名称：
+gui.write=写入
+gui.setname=设定一个名称
+
+chat.programmer.occupied=编程器正在使用
+
+tile.port.name=端口
+tile.cable.name=数据电缆
+tile.programmer.name=编程器
+
+tile.heatsink.gold.name=金散热片
+tile.heatsink.iron.name=铁散热片
+
+tile.processor.intact.name=处理器
+tile.processor.damaged.name=损坏的处理器
+
+item.memory.name=程序卡
+
+itemGroup.RedStone IO=RedStone IO

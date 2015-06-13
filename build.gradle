@@ -19,7 +19,7 @@ apply plugin: 'scala'
 apply plugin: 'forge'
 
 version = "1.0"
-group= "org.oxygen.redio" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "org.oxygen.redio"
 archivesBaseName = "RedIO"
 
 minecraft {
@@ -47,7 +47,6 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
 }
 
 processResources
@@ -74,3 +73,4 @@ idea
 {
 	module { inheritOutputDirs = true }
 }
+

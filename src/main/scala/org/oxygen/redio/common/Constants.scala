@@ -1,5 +1,6 @@
 package org.oxygen.redio.common
 
+import java.awt.Font
 import java.util.Properties
 
 import net.minecraft.block.material.{MapColor, Material}
@@ -20,14 +21,17 @@ object Constants
 
 		object SetName extends GuiChannel
 		{
-			final val ID		= 0
-			final val BTN_OK	= 0
-			final val TEXT_NAME	= 1
+			final val ID			= 0
+			final val BTN_OK		= 0
+			final val TEXT_NAME		= 1
 		}
 
 		object EditSource extends GuiChannel
 		{
-			final val ID		= 1
+			final val ID			= 1
+			final val BTN_WRITE		= 0
+			final val TEXT_NAME		= 1
+			final val TEXT_SOURCE	= 2
 		}
 	}
 
@@ -39,9 +43,14 @@ object Constants
 		final val FACING_MASK	= 0x03
 	}
 
+	object Fonts
+	{
+		final val Monospace = Font.createFont(Font.TRUETYPE_FONT, getClass.getResourceAsStream("/basis33.ttf"))
+	}
+
 	object Events
 	{
-		final val SMOKE			= 0
+		final val SMOKE = 0
 	}
 
 	object Materials

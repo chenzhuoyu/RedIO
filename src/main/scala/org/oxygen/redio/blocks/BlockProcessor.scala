@@ -148,14 +148,9 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 		worldIn.scheduleUpdate(pos, this, tickRate(worldIn))
 		worldIn.updateComparatorOutputLevel(pos, this)
 
-		if (worldIn.isRemote) placer match
-		{
-			case player: EntityPlayer =>
-				FMLNetworkHandler.openGui(player, Constants.MOD_ID,
-					Constants.Gui.SetName.ID, worldIn, pos.getX, pos.getY, pos.getZ)
-
-			case _ =>
-		}
+		if (worldIn.isRemote)
+			FMLNetworkHandler.openGui(placer.asInstanceOf[EntityPlayer],
+				Constants.MOD_ID, Constants.Gui.SetName.ID, worldIn, pos.getX, pos.getY, pos.getZ)
 	}
 
 	override def onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState,

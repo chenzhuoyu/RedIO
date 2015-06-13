@@ -25,7 +25,8 @@ class GuiSetName(val tileEntity: TileEntity) extends GuiBase(new ContainerSetNam
 
 		addButton(buttonOK)
 		buttonOK.enabled = false
-		textName.setMaxStringLength(32)
+		textName.setFocused(true)
+		textName.setMaxStringLength(16)
 	}
 
 	override def keyTyped(typedChar: Char, keyCode: Int) =
@@ -59,7 +60,7 @@ class GuiSetName(val tileEntity: TileEntity) extends GuiBase(new ContainerSetNam
 	{
 		textName.drawTextBox()
 		super.drawComponents(mouseX, mouseY, ticks)
-		drawCenteredString(fontRendererObj, I18n.format("gui.setname"), width / 2, guiTop + 10, 0xffffff)
+		drawCenteredString(fontRendererObj, I18n.format("gui.setname"), width / 2, guiTop + 10, 0xffffffff)
 	}
 
 	override def actionPerformed(button: GuiButton) = if (button.enabled) button.id match

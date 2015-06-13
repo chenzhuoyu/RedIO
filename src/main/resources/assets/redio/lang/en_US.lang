@@ -1,4 +1,8 @@
+gui.name=Name:
+gui.write=Program
 gui.setname=Set name for this block
+
+chat.programmer.occupied=This programmer is in use
 
 tile.port.name=Port
 tile.cable.name=Cable

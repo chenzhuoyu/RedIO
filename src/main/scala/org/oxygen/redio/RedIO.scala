@@ -1,6 +1,8 @@
 package org.oxygen.redio
 
 import net.minecraft.block.Block
+import net.minecraft.client.Minecraft
+import net.minecraft.client.resources.IReloadableResourceManager
 import net.minecraft.client.resources.model.{ModelBakery, ModelResourceLocation}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
@@ -19,12 +21,12 @@ import net.minecraftforge.fml.common.network.handshake.NetworkDispatcher
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.apache.logging.log4j.LogManager
-import org.oxygen.redio.blocks.{BlockCable, BlockHeatSink, BlockPort, BlockProcessor}
+import org.oxygen.redio.blocks._
 import org.oxygen.redio.common.{Constants, Utils}
 import org.oxygen.redio.gui.GuiHandler
 import org.oxygen.redio.items.{ItemHeatSink, ItemMemory, ItemProcessor}
 import org.oxygen.redio.runtime.ScriptEngine
-import org.oxygen.redio.tileentities.{TileEntityPort, TileEntityProcessor}
+import org.oxygen.redio.tileentities.{TileEntityProgrammer, TileEntityPort, TileEntityProcessor}
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VER, modLanguage = "scala")
 object RedIO
@@ -51,24 +53,33 @@ object RedIO
 		/* method/field name mapper */
 		Constants.NameMapper.init()
 
+		/* font renderer */
+		Minecraft.getMinecraft.getResourceManager.asInstanceOf[IReloadableResourceManager].registerReloadListener(MonoFontRenderer)
+		Minecraft.getMinecraft.refreshResources()
+
 		/* items */
 		GameRegistry.registerItem(ItemMemory, "memory")
 
-		/* blocks */
+		/* normal blocks */
 		GameRegistry.registerBlock(BlockPort, "port")
 		GameRegistry.registerBlock(BlockCable, "cable")
+		GameRegistry.registerBlock(BlockProgrammer, "programmer")
+
+		/* multi-texture blocks */
 		GameRegistry.registerBlock(BlockHeatSink, classOf[ItemHeatSink], "heatsink")
 		GameRegistry.registerBlock(BlockProcessor, classOf[ItemProcessor], "processor")
 
 		/* tile entities */
 		TileEntity.addMapping(classOf[TileEntityPort], "Port")
 		TileEntity.addMapping(classOf[TileEntityProcessor], "Processor")
+		TileEntity.addMapping(classOf[TileEntityProgrammer], "Programmer")
 
 		/* GUI */
 		NetworkRegistry.INSTANCE.registerGuiHandler(Constants.MOD_ID, GuiHandler)
 
-		/* network */
+		/* network channels */
 		NetworkRegistry.INSTANCE.newEventDrivenChannel(Constants.Gui.SetName.NAME).register(this)
+		NetworkRegistry.INSTANCE.newEventDrivenChannel(Constants.Gui.EditSource.NAME).register(this)
 
 		/* recipes */
 		Utils.addCraftingRecipe(ItemMemory, 1,
@@ -79,9 +90,12 @@ object RedIO
 		/* client item models */
 		if (event.getSide.isClient)
 		{
-			/* blocks */
+			/* normal blocks */
 			registerBlockItem(BlockPort, Constants.Meta.NORMAL, "redio:port")
 			registerBlockItem(BlockCable, Constants.Meta.NORMAL, "redio:cable")
+			registerBlockItem(BlockProgrammer, Constants.Meta.NORMAL, "redio:programmer")
+
+			/* multi-texture blocks */
 			registerBlockItem(BlockHeatSink, Constants.Meta.NORMAL, "redio:heatsink_iron")
 			registerBlockItem(BlockHeatSink, Constants.Meta.DAMAGED, "redio:heatsink_gold")
 			registerBlockItem(BlockProcessor, Constants.Meta.NORMAL, "redio:processor_intact")
@@ -108,5 +122,7 @@ object RedIO
 			entity.readFromNBT(nbt)
 			entity.markDirty()
 			worldObj.markBlockForUpdate(entity.getPos)
+
+		case Constants.Gui.EditSource.NAME =>
 	}
 }

@@ -1,0 +1,28 @@
+{
+    "textures": {
+        "slab": "blocks/gold_block",
+        "particle": "blocks/gold_block"
+    },
+    "elements": [{
+        "to": [16, 6, 16],
+        "from": [0, 0, 0],
+        "faces": {
+            "up":    { "texture": "#slab" },
+            "down":  { "texture": "#slab", "cullface": "down" },
+            "east":  { "texture": "#slab", "cullface": "east" },
+            "west":  { "texture": "#slab", "cullface": "west" },
+            "north": { "texture": "#slab", "cullface": "north" },
+            "south": { "texture": "#slab", "cullface": "south" }
+        }
+    }, {
+        "to": [16, 16, 8],
+        "from": [0, 6, 0],
+        "faces": {
+            "up":    { "texture": "#slab" },
+            "east":  { "texture": "#slab" },
+            "west":  { "texture": "#slab" },
+            "north": { "texture": "#slab" },
+            "south": { "texture": "#slab" }
+        }
+    }]
+}
