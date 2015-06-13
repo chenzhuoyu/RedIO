@@ -1,6 +1,9 @@
 {
     "parent": "redio:block/programmer",
     "display": {
+        "gui": {
+            "rotation": [0, 180, 0]
+        },
         "firstperson": {
             "rotation": [0, -45, 0]
         },

@@ -2,6 +2,8 @@ package org.oxygen.redio.runtime
 
 import java.util.concurrent.{Callable, Executors, TimeUnit, TimeoutException}
 
+import org.oxygen.redio.RedIO
+import org.oxygen.redio.common.Utils
 import org.oxygen.redscript.Engine
 
 object ScriptEngine
@@ -35,7 +37,15 @@ object ScriptEngine
 
 	def init() =
 	{
-		System.loadLibrary("rssb")
+		RedIO.logger.info("Starting script engine for " + System.getProperty("os.name"))
+		System.getProperty("os.name") match
+		{
+			case "Linux"						=> Utils.loadLibrary("/natives/librssb.so")
+			case "Mac OS X"						=> Utils.loadLibrary("/natives/librssb.dylib")
+			case x if x.startsWith("Windows")	=> Utils.loadLibrary("/natives/rssb.dll")
+			case _								=> throw new RuntimeException("This operating system is not supported")
+		}
+
 		Engine.init(Array("redio"))
 	}
 }

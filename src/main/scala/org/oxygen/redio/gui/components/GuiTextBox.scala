@@ -2,10 +2,9 @@ package org.oxygen.redio.gui.components
 
 import java.awt.Color
 
-import net.minecraft.client.gui.{GuiSlider, Gui}
-import net.minecraft.client.renderer.{GlStateManager, Tessellator}
-import org.lwjgl.opengl.GL11
+import net.minecraft.client.gui.Gui
 import org.oxygen.redio.MonoFontRenderer
+import org.oxygen.redio.common.Utils
 
 class GuiTextBox(val id: Int, val x: Int, val y: Int, val width: Int, val height: Int) extends Gui
 {
@@ -45,39 +44,12 @@ class GuiTextBox(val id: Int, val x: Int, val y: Int, val width: Int, val height
 	private var _cursorY = 0
 
 	private val font = MonoFontRenderer.font
-	private val scroll = new GuiScrollBar(0, 0, 0)
+	private val scrollV = new GuiScrollBar(x + width - 8, y, 8, height, false)
 
 	def scrollX = _scrollX
 	def scrollY = _scrollY
 	def cursorX = _cursorX
 	def cursorY = _cursorY
-
-	def strokeRect(x: Int, y: Int, width: Int, height: Int, color: Int) =
-	{
-		val r = x + width
-		val b = y + height
-		val tessellator = Tessellator.getInstance
-		val worldRenderer = tessellator.getWorldRenderer
-
-		GlStateManager.enableBlend()
-		GlStateManager.disableTexture2D()
-		GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO)
-		GlStateManager.color(
-			(color >> 16 & 255).toFloat / 255.0f,
-			(color >>  8 & 255).toFloat / 255.0f,
-			(color >>  0 & 255).toFloat / 255.0f,
-			(color >> 24 & 255).toFloat / 255.0f)
-
-		worldRenderer.startDrawing(GL11.GL_LINE_LOOP)
-		worldRenderer.addVertex(x.toDouble, b.toDouble, 0.0)
-		worldRenderer.addVertex(r.toDouble, b.toDouble, 0.0)
-		worldRenderer.addVertex(r.toDouble, y.toDouble, 0.0)
-		worldRenderer.addVertex(x.toDouble, y.toDouble, 0.0)
-
-		tessellator.draw()
-		GlStateManager.enableTexture2D()
-		GlStateManager.disableBlend()
-	}
 
 	def drawTextBox() =
 	{
@@ -86,8 +58,7 @@ class GuiTextBox(val id: Int, val x: Int, val y: Int, val width: Int, val height
 		val clipX = (width - dx - 16) / font.measure(' ')
 
 		Gui.drawRect(x + 1, y + 1, x + width - 1, y + height - 1, 0x80000000)
-
-		strokeRect(x, y, width, height, 0xffa0a0a0)
+		Utils.strokeRect(x, y, width, height, 0xffa0a0a0)
 		drawVerticalLine(x + dx + 4, y, y + height, 0xff303030)
 
 		for ((line, i) <- lines.slice(_scrollY, _scrollY + clipY).zipWithIndex)
@@ -98,5 +69,10 @@ class GuiTextBox(val id: Int, val x: Int, val y: Int, val width: Int, val height
 			font.drawString(string, x + dx + 6, y + i * font.height + 4, Color.white)
 			font.drawString(lineno, x + dx - font.measure(lineno) + 2, y + i * font.height + 4, Color.darkGray)
 		}
+
+		scrollV.max = lines.length + 1
+		scrollV.pos = scrollY
+		scrollV.value = Math.min(clipY, lines.length + 1)
+		scrollV.drawScrollBar()
 	}
 }

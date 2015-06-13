@@ -1,28 +1,33 @@
 {
     "textures": {
-        "slab": "blocks/gold_block",
-        "particle": "blocks/gold_block"
+        "up": "redio:blocks/programmer/up",
+        "down": "redio:blocks/programmer/down",
+        "east": "redio:blocks/programmer/east",
+        "west": "redio:blocks/programmer/west",
+        "north": "redio:blocks/programmer/north",
+        "south": "redio:blocks/programmer/south",
+        "particle": "redio:blocks/programmer/south"
     },
     "elements": [{
         "to": [16, 6, 16],
         "from": [0, 0, 0],
         "faces": {
-            "up":    { "texture": "#slab" },
-            "down":  { "texture": "#slab", "cullface": "down" },
-            "east":  { "texture": "#slab", "cullface": "east" },
-            "west":  { "texture": "#slab", "cullface": "west" },
-            "north": { "texture": "#slab", "cullface": "north" },
-            "south": { "texture": "#slab", "cullface": "south" }
+            "up":    { "texture": "#up" },
+            "down":  { "texture": "#down", "cullface": "down" },
+            "east":  { "texture": "#east", "cullface": "east" },
+            "west":  { "texture": "#west", "cullface": "west" },
+            "north": { "texture": "#north", "cullface": "north" },
+            "south": { "texture": "#south", "cullface": "south" }
         }
     }, {
         "to": [16, 16, 8],
         "from": [0, 6, 0],
         "faces": {
-            "up":    { "texture": "#slab" },
-            "east":  { "texture": "#slab" },
-            "west":  { "texture": "#slab" },
-            "north": { "texture": "#slab" },
-            "south": { "texture": "#slab" }
+            "up":    { "texture": "#up" },
+            "east":  { "texture": "#east", "uv": [8, 0, 16, 8] },
+            "west":  { "texture": "#west" },
+            "north": { "texture": "#north" },
+            "south": { "texture": "#south" }
         }
     }]
 }

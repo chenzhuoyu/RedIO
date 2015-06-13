@@ -12,8 +12,8 @@ class TrueTypeFont(val font: Font)
 {
 	private class TexCoords(val x: Int, val y: Int, val width: Int, val height: Int) {}
 
-	final val TextureWidth = 1024
-	final val TextureHeight = 1024
+	final val TextureWidth = 512
+	final val TextureHeight = 512
 
 	private val fontMap = Array.fill[TexCoords](256)(null)
 
@@ -108,6 +108,7 @@ class TrueTypeFont(val font: Font)
 		}
 
 		GL11.glEnd()
+		xCoord
 	}
 
 	def buildTexture() =
