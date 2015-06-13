@@ -42,7 +42,7 @@ object ScriptEngine
 		{
 			case "Linux"						=> Utils.loadLibrary("/natives/librssb.so")
 			case "Mac OS X"						=> Utils.loadLibrary("/natives/librssb.dylib")
-			case x if x.startsWith("Windows")	=> Utils.loadLibrary("/natives/rssb.dll")
+			case x if x.startsWith("Windows")	=> Utils.loadLibrary("/natives/librssb.dll")
 			case _								=> throw new RuntimeException("This operating system is not supported")
 		}
 

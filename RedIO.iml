@@ -82,16 +82,5 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library name="Gradle: RedScriptScalaBridge">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/RedScriptScalaBridge.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../RedScriptScalaBridge/src" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
 </module>

@@ -49,7 +49,7 @@ object Utils
 
 	def loadLibrary(resource: String) =
 	{
-		val file = File.createTempFile(resource, ".lib")
+		val file = File.createTempFile("librssb-", ".lib")
 		val input = getClass.getResourceAsStream(resource)
 		val output = new FileOutputStream(file)
 
@@ -68,7 +68,7 @@ object Utils
 		System.load(file.getAbsolutePath)
 	}
 
-	def getPlayerFacing(player: EntityLivingBase): Int =
+	def getPlayerFacing(player: EntityLivingBase) =
 		MathHelper.floor_double(player.rotationYaw * 4.0f / 360.0f + 0.5d) & 0x03
 
 	def getPrivateField(cls: Class[_], name: String): Field =
