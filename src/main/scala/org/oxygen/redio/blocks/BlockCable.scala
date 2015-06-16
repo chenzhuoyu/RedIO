@@ -32,8 +32,8 @@ object BlockCable extends
 	override def isOpaqueCube: Boolean = false
 	override def createBlockState: BlockState = new BlockState(this, UP, DOWN, EAST, WEST, NORTH, SOUTH)
 
-	override def isAcceptable(world: IBlockAccess, pos: BlockPos, name: String): Boolean = false
-	override def acceptPacket(world: IBlockAccess, pos: BlockPos, packet: PacketType): Any = null
+	override def isAcceptable(world: IBlockAccess, pos: BlockPos, target: String): Boolean = false
+	override def acceptPacket(world: IBlockAccess, pos: BlockPos, source: String, packet: PacketType): Any = null
 
 	override def getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos): IBlockState = state
 		.withProperty(UP, worldIn.getBlockState(pos.up()).getBlock.isInstanceOf[PacketNode])

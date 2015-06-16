@@ -103,10 +103,10 @@ class TileEntityProcessor extends TileEntity with Executor
 		}
 	}
 
-	def dispatchPacket(packet: PacketType): Any = packet match
+	def dispatchPacket(source: String, packet: PacketType): Any = packet match
 	{
-		case Input => null
-		case Output(payload) => onMessage(payload)
+		case Input => onMessage(source, null)
+		case Output(payload) => onMessage(source, payload)
 	}
 
 	private def getCallback(mod: RedObject, name: String) =
@@ -133,8 +133,6 @@ class TileEntityProcessor extends TileEntity with Executor
 	{
 		try
 		{
-			RedIO.logger.info("Loading script '" + script + "'")
-
 			val code = Engine.compile(script)
 			val module = code.eval
 

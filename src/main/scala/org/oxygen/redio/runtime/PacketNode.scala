@@ -7,21 +7,22 @@ import scala.collection.immutable.HashSet
 
 trait PacketNode
 {
-	def isAcceptable(world: IBlockAccess, pos: BlockPos, name: String): Boolean
-	def acceptPacket(world: IBlockAccess, pos: BlockPos, packet: PacketType): Any
+	def isAcceptable(world: IBlockAccess, pos: BlockPos, target: String): Boolean
+	def acceptPacket(world: IBlockAccess, pos: BlockPos, source: String, packet: PacketType): Any
 }
 
 object PacketNode
 {
-	def dispatch(world: IBlockAccess, pos: BlockPos, name: String, packet: PacketType): Option[Any] =
+	def dispatch(world: IBlockAccess, pos: BlockPos, source: String, target: String, packet: PacketType): Option[Any] =
 	{
 		val path = HashSet[BlockPos]()
-		dispatch(world, pos, path, name.trim, packet)
+		dispatch(world, pos, source.trim, target.trim, packet, path)
 	}
 
-	def dispatch(world: IBlockAccess, pos: BlockPos, path: HashSet[BlockPos], name: String, packet: PacketType): Option[Any] =
+	def dispatch(world: IBlockAccess, pos: BlockPos, source: String,
+		target: String, packet: PacketType, path: HashSet[BlockPos]): Option[Any] =
 	{
-		if (name.isEmpty)
+		if (target.isEmpty)
 			return None
 
 		val newPath = path + pos
@@ -29,10 +30,10 @@ object PacketNode
 
 		for ((neighbor, block) <- neighbors zip neighbors.map(world.getBlockState(_).getBlock)) block match
 		{
-			case node: PacketNode if !path.contains(neighbor) => node.isAcceptable(world, neighbor, name) match
+			case node: PacketNode if !path.contains(neighbor) => node.isAcceptable(world, neighbor, target) match
 			{
-				case true  => return Some(node.acceptPacket(world, neighbor, packet))
-				case false => dispatch(world, neighbor, newPath, name, packet) match
+				case true  => return Some(node.acceptPacket(world, neighbor, source, packet))
+				case false => dispatch(world, neighbor, source, target, packet, newPath) match
 				{
 					case None =>
 					case Some(result) => return Some(result)

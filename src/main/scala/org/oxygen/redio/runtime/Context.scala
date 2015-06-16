@@ -6,7 +6,7 @@ class Context(private val processor: TileEntityProcessor)
 {
 	def recv(source: String): Any =
 	{
-		PacketNode.dispatch(processor.getWorld, processor.getPos, source, Input) match
+		PacketNode.dispatch(processor.getWorld, processor.getPos, processor.name, source, Input) match
 		{
 			case None => null
 			case Some(result) => result
@@ -15,7 +15,7 @@ class Context(private val processor: TileEntityProcessor)
 
 	def send(target: String, payload: Any): Any =
 	{
-		PacketNode.dispatch(processor.getWorld, processor.getPos, target, Output(payload)) match
+		PacketNode.dispatch(processor.getWorld, processor.getPos, processor.name, target, Output(payload)) match
 		{
 			case None => null
 			case Some(result) => result

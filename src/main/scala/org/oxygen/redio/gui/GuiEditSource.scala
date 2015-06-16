@@ -14,6 +14,7 @@ import org.oxygen.redio.tileentities.TileEntityProgrammer
 
 class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEditSource(tileEntity))
 {
+	private var loaded: Boolean = false
 	private var updated: Boolean = false
 	private var textName: GuiTextField = null
 	private var textSource: GuiTextBox = null
@@ -26,16 +27,25 @@ class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEdi
 		super.initGui()
 		Keyboard.enableRepeatEvents(true)
 
-		textName = new GuiTextField(Constants.Gui.EditSource.TEXT_NAME, fontRendererObj, 35, height - 25, 100, 20)
-		textSource = new GuiTextBox(Constants.Gui.EditSource.TEXT_SOURCE, 5, 5, width - 10, height - 35)
-		buttonDownload = new GuiButton(Constants.Gui.EditSource.BTN_WRITE, width - 60, height - 25, 50, 20, I18n.format("gui.write"))
+		if (programmer.isEmpty)
+		{
+			loaded = false
+			mc.thePlayer.closeScreen()
+		}
+		else
+		{
+			loaded = true
+			textName = new GuiTextField(Constants.Gui.EditSource.TEXT_NAME, fontRendererObj, 35, height - 25, 100, 20)
+			textSource = new GuiTextBox(Constants.Gui.EditSource.TEXT_SOURCE, 5, 5, width - 10, height - 35)
+			buttonDownload = new GuiButton(Constants.Gui.EditSource.BTN_WRITE, width - 60, height - 25, 50, 20, I18n.format("gui.write"))
 
-		addButton(buttonDownload)
-		buttonDownload.enabled = false
-		textName.setMaxStringLength(16)
+			addButton(buttonDownload)
+			buttonDownload.enabled = false
+			textName.setMaxStringLength(16)
 
-		textName.setText(programmer.name)
-		textSource.text = programmer.script
+			textName.setText(programmer.name)
+			textSource.text = programmer.script
+		}
 	}
 
 	override def keyTyped(typedChar: Char, keyCode: Int) =
@@ -55,18 +65,21 @@ class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEdi
 		super.onGuiClosed()
 		Keyboard.enableRepeatEvents(false)
 
-		val buffer = new PacketBuffer(Unpooled.buffer())
+		if (loaded)
+		{
+			val buffer = new PacketBuffer(Unpooled.buffer())
 
-		buffer.writeString(textName.getText)
-		buffer.writeString(textSource.text)
-		buffer.writeBoolean(updated)
-		buffer.writeBlockPos(tileEntity.getPos)
-		mc.getNetHandler.addToSendQueue(new C17PacketCustomPayload(Constants.Gui.EditSource.NAME, buffer))
+			buffer.writeString(textName.getText)
+			buffer.writeString(textSource.text)
+			buffer.writeBoolean(updated)
+			buffer.writeBlockPos(tileEntity.getPos)
+			mc.getNetHandler.addToSendQueue(new C17PacketCustomPayload(Constants.Gui.EditSource.NAME, buffer))
 
-		if (!updated)
-			tileEntity.asInstanceOf[TileEntityProgrammer].ejectMemory()
-		else
-			tileEntity.asInstanceOf[TileEntityProgrammer].updateScript(textName.getText, textSource.text)
+			if (!updated)
+				tileEntity.asInstanceOf[TileEntityProgrammer].ejectMemory()
+			else
+				tileEntity.asInstanceOf[TileEntityProgrammer].updateScript(textName.getText, textSource.text)
+		}
 	}
 
 	override def mouseClicked(mouseX: Int, mouseY: Int, button: Int) =

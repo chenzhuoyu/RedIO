@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.IReloadableResourceManager
 import net.minecraft.client.resources.model.{ModelBakery, ModelResourceLocation}
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Items
+import net.minecraft.init.{Blocks, Items}
 import net.minecraft.item.Item
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
@@ -82,10 +82,57 @@ object RedIO
 		NetworkRegistry.INSTANCE.newEventDrivenChannel(Constants.Gui.EditSource.NAME).register(this)
 
 		/* recipes */
-		Utils.addCraftingRecipe(ItemMemory, 1,
-			null          , Items.redstone, null,
+		val ironBars = Item.getItemFromBlock(Blocks.iron_bars)
+		val redstoneBlock = Item.getItemFromBlock(Blocks.redstone_block)
+
+		Utils.addCraftingRecipe(
+			ItemMemory, 1,
+			Constants.Meta.NORMAL,
+			null          , Items.redstone, null          ,
 			Items.redstone, Items.diamond , Items.redstone,
-			null          , Items.redstone, null)
+			null          , Items.redstone, null          )
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockPort), 1,
+			Constants.Meta.NORMAL,
+			Items.iron_ingot, Items.repeater, Items.iron_ingot,
+			Items.iron_ingot, redstoneBlock , Items.iron_ingot,
+			Items.iron_ingot, Items.repeater, Items.iron_ingot)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockPort), 1,
+			Constants.Meta.NORMAL,
+			Items.iron_ingot, Items.iron_ingot, Items.iron_ingot,
+			Items.repeater  , redstoneBlock   , Items.repeater  ,
+			Items.iron_ingot, Items.iron_ingot, Items.iron_ingot)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockCable), 9,
+			Constants.Meta.NORMAL,
+			ironBars, Items.redstone, ironBars,
+			ironBars, Items.redstone, ironBars,
+			ironBars, Items.redstone, ironBars)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockCable), 9,
+			Constants.Meta.NORMAL,
+			ironBars      , ironBars      , ironBars      ,
+			Items.redstone, Items.redstone, Items.redstone,
+			ironBars      , ironBars      , ironBars      )
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockHeatSink), 1,
+			Constants.Meta.NORMAL,
+			Items.iron_ingot, null            , Items.iron_ingot,
+			null            , Items.iron_ingot, null            ,
+			Items.gold_ingot, Items.gold_ingot, Items.gold_ingot)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockHeatSink), 1,
+			Constants.Meta.DAMAGED,
+			Items.gold_ingot, null            , Items.gold_ingot,
+			null            , Items.gold_ingot, null            ,
+			Items.gold_ingot, Items.gold_ingot, Items.gold_ingot)
 
 		/* client item models */
 		if (event.getSide.isClient)

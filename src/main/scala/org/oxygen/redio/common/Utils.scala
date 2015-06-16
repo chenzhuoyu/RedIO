@@ -118,7 +118,7 @@ object Utils
 			redstone.getValue(BlockRedstoneWire.POWER).asInstanceOf[Int] else 0)
 	}
 
-	def addCraftingRecipe(result: Item, count: Int, recipe: Item*): Unit =
+	def addCraftingRecipe(result: Item, count: Int, meta: Int, recipe: Item*): Unit =
 	{
 		if (recipe.length == 9)
 		{
@@ -138,6 +138,7 @@ object Utils
 				})
 			}
 
+			args += true
 			args += pattern.substring(0, 3)
 			args += pattern.substring(3, 6)
 			args += pattern.substring(6, 9)
@@ -152,7 +153,7 @@ object Utils
 			}
 
 			CraftingManager.getInstance().getRecipeList.asInstanceOf[util.List[Any]].add(
-				new ShapedOreRecipe(new ItemStack(result, count), args.result().asInstanceOf[Array[AnyRef]]:_*))
+				new ShapedOreRecipe(new ItemStack(result, count, meta), args.result().asInstanceOf[Array[AnyRef]]:_*))
 		}
 	}
 }

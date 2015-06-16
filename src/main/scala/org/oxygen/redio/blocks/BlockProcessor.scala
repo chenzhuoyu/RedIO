@@ -175,15 +175,15 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 		}
 	}
 
-	override def isAcceptable(world: IBlockAccess, pos: BlockPos, name: String): Boolean = world.getTileEntity(pos) match
+	override def isAcceptable(world: IBlockAccess, pos: BlockPos, target: String): Boolean = world.getTileEntity(pos) match
 	{
-		case te: TileEntityProcessor => te.name.equals(name)
+		case te: TileEntityProcessor => te.name.equals(target)
 		case _ => false
 	}
 
-	override def acceptPacket(world: IBlockAccess, pos: BlockPos, packet: PacketType): Any = world.getTileEntity(pos) match
+	override def acceptPacket(world: IBlockAccess, pos: BlockPos, source: String, packet: PacketType): Any = world.getTileEntity(pos) match
 	{
-		case te: TileEntityProcessor => te.asInstanceOf[TileEntityProcessor].dispatchPacket(packet)
+		case te: TileEntityProcessor => te.asInstanceOf[TileEntityProcessor].dispatchPacket(source, packet)
 		case _ => null
 	}
 }

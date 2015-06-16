@@ -15,7 +15,7 @@ class TileEntityPort extends TileEntity
 {
 	var name: String = ""
 
-	def dispatchPacket(packet: PacketType): Any = packet match
+	def dispatchPacket(source: String, packet: PacketType): Any = packet match
 	{
 		case Input => Utils.getRedStonePower(worldObj, pos) > 0
 		case Output(payload) => payload match

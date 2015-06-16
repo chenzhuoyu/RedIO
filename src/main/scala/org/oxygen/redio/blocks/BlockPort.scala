@@ -49,15 +49,15 @@ object BlockPort extends
 		}
 	}
 
-	override def isAcceptable(world: IBlockAccess, pos: BlockPos, name: String): Boolean = world.getTileEntity(pos) match
+	override def isAcceptable(world: IBlockAccess, pos: BlockPos, target: String): Boolean = world.getTileEntity(pos) match
 	{
-		case te: TileEntityPort => te.name.equals(name)
+		case te: TileEntityPort => te.name.equals(target)
 		case _ => false
 	}
 
-	override def acceptPacket(world: IBlockAccess, pos: BlockPos, packet: PacketType): Any = world.getTileEntity(pos) match
+	override def acceptPacket(world: IBlockAccess, pos: BlockPos, source: String, packet: PacketType): Any = world.getTileEntity(pos) match
 	{
-		case te: TileEntityPort => te.asInstanceOf[TileEntityPort].dispatchPacket(packet)
+		case te: TileEntityPort => te.asInstanceOf[TileEntityPort].dispatchPacket(source, packet)
 		case _ => null
 	}
 }

@@ -195,7 +195,7 @@ class GuiTextBox(val id: Int, val x: Int, val y: Int, val width: Int, val height
 		case Keyboard.KEY_RETURN | Keyboard.KEY_NUMPADENTER =>
 			val line1 = lines(cursorY).take(cursorX)
 			val line2 = lines(cursorY).drop(cursorX)
-			val indent = if (line1.last == '{') "    " else ""
+			val indent = if (!line1.isEmpty && line1.last == '{') "    " else ""
 			val leading = indent + " " * (line1.length - StringUtils.stripStart(line1, null).length)
 
 			blinkTick = 0
