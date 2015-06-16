@@ -2,7 +2,7 @@ package org.oxygen.redio.runtime
 
 import org.oxygen.redio.tileentities.TileEntityProcessor
 
-class Context(val processor: TileEntityProcessor)
+class Context(private val processor: TileEntityProcessor)
 {
 	def recv(source: String): Any =
 	{

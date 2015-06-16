@@ -133,7 +133,8 @@ class TileEntityProcessor extends TileEntity with Executor
 	{
 		try
 		{
-			println("Loading script '" + script + "'")
+			RedIO.logger.info("Loading script '" + script + "'")
+
 			val code = Engine.compile(script)
 			val module = code.eval
 
@@ -146,8 +147,6 @@ class TileEntityProcessor extends TileEntity with Executor
 
 			code.unref()
 			module.unref()
-			println("onSysTick = " + onSysTick)
-			println("onMessage = " + onMessage)
 		} catch
 		{
 			case e: RuntimeException =>
