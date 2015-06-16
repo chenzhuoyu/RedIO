@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.{GlStateManager, OpenGlHelper, RenderHelper
 import net.minecraft.inventory.{Container, Slot}
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumChatFormatting
+import org.lwjgl.input.Keyboard
 import org.oxygen.redio.common.Utils
 
 class GuiBase(val container: Container) extends GuiContainer(container)
@@ -230,21 +231,28 @@ class GuiBase(val container: Container) extends GuiContainer(container)
 						{
 							handleMouseClick(slot, slotNum, button, 3)
 						}
-						else if (slotNum == -999)
-						{
-							handleMouseClick(slot, slotNum, button, 4)
-						}
 						else
 						{
-							if (slot == null || !slot.getHasStack)
-								shiftClickedSlot.set(this, null)
+							if (slotNum == -999)
+							{
+								handleMouseClick(slot, slotNum, button, 4)
+							}
+							else if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+							{
+								if (slot == null || !slot.getHasStack)
+									shiftClickedSlot.set(this, null)
+								else
+									shiftClickedSlot.set(this, slot.getStack)
+
+								handleMouseClick(slot, slotNum, button, 1)
+							}
 							else
-								shiftClickedSlot.set(this, slot.getStack)
+							{
+								handleMouseClick(slot, slotNum, button, 0)
+							}
 
-							handleMouseClick(slot, slotNum, button, 1)
+							ignoreMouseUp.setBoolean(this, true)
 						}
-
-						ignoreMouseUp.setBoolean(this, true)
 					}
 				}
 			}
