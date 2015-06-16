@@ -1,6 +1,6 @@
 package org.oxygen.redscript
 
-import org.oxygen.redscript.objects.{RedObject, RedCode}
+import org.oxygen.redscript.objects.{RedCode, RedObject}
 
 object Engine
 {

@@ -1,7 +1,7 @@
 package org.oxygen.redio.gui.components
 
-import java.awt.{Color, Graphics2D, Font}
-import java.awt.image.{DataBufferInt, BufferedImage}
+import java.awt.image.{BufferedImage, DataBufferInt}
+import java.awt.{Color, Font, Graphics2D}
 import java.nio.ByteBuffer
 
 import net.minecraft.client.renderer.GlStateManager

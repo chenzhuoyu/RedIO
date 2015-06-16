@@ -1,6 +1,6 @@
 package org.oxygen.redio.common
 
-import java.io.{FileOutputStream, File}
+import java.io.{File, FileOutputStream}
 import java.lang.reflect.{Field, Method}
 import java.util
 

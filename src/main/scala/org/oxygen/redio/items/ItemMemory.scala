@@ -3,9 +3,11 @@ package org.oxygen.redio.items
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.{BlockPos, EnumFacing, StatCollector}
+import net.minecraft.util.{BlockPos, ChatComponentTranslation, EnumFacing, StatCollector}
 import net.minecraft.world.World
-import org.oxygen.redio.tileentities.TileEntityProcessor
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler
+import org.oxygen.redio.common.Constants
+import org.oxygen.redio.tileentities.{TileEntityProcessor, TileEntityProgrammer}
 
 object ItemMemory extends Item
 {
@@ -29,6 +31,24 @@ object ItemMemory extends Item
 			stack.stackSize -= 1
 			true
 
+		case te: TileEntityProgrammer =>
+			if (!te.isEmpty)
+			{
+				if (worldIn.isRemote)
+					playerIn.addChatMessage(new ChatComponentTranslation("chat.programmer.occupied"))
+
+				return true
+			}
+
+			te.insertMemory(stack)
+			stack.stackSize -= 1
+
+			if (worldIn.isRemote)
+				FMLNetworkHandler.openGui(playerIn, Constants.MOD_ID,
+					Constants.Gui.EditSource.ID, worldIn, pos.getX, pos.getY, pos.getZ)
+
+			true
+
 		case _ => false
 	}
 
@@ -37,7 +57,7 @@ object ItemMemory extends Item
 		val nbt = new NBTTagCompound
 
 		nbt.setString("name", "")
-		nbt.setString("script", "func onSysTick() { Context.send('testio', not Context.recv('testio')) }")
+		nbt.setString("script", "")
 		stack.setTagCompound(nbt)
 	}
 }

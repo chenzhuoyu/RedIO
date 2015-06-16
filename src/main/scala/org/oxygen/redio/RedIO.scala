@@ -26,7 +26,7 @@ import org.oxygen.redio.common.{Constants, Utils}
 import org.oxygen.redio.gui.GuiHandler
 import org.oxygen.redio.items.{ItemHeatSink, ItemMemory, ItemProcessor}
 import org.oxygen.redio.runtime.ScriptEngine
-import org.oxygen.redio.tileentities.{TileEntityProgrammer, TileEntityPort, TileEntityProcessor}
+import org.oxygen.redio.tileentities.{TileEntityPort, TileEntityProcessor, TileEntityProgrammer}
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VER, modLanguage = "scala")
 object RedIO
@@ -124,5 +124,15 @@ object RedIO
 			worldObj.markBlockForUpdate(entity.getPos)
 
 		case Constants.Gui.EditSource.NAME =>
+			val buffer = new PacketBuffer(event.packet.payload())
+			val worldObj = player.get(event.packet.getDispatcher).asInstanceOf[EntityPlayer].worldObj
+
+			val name = buffer.readStringFromBuffer(32)
+			val script = buffer.readStringFromBuffer(102400)
+
+			if (!buffer.readBoolean())
+				worldObj.getTileEntity(buffer.readBlockPos()).asInstanceOf[TileEntityProgrammer].ejectMemory()
+			else
+				worldObj.getTileEntity(buffer.readBlockPos()).asInstanceOf[TileEntityProgrammer].updateScript(name, script)
 	}
 }
