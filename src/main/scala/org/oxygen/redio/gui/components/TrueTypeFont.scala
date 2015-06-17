@@ -90,24 +90,69 @@ class TrueTypeFont(val font: Font)
 		case false => string.map(measure).sum
 	}
 
-	def drawString(string: String, x: Int, y: Int, color: Color) =
+	def drawEnd() = GL11.glEnd()
+	def drawColor(c: Color) = GL11.glColor4f(c.getRed / 256.0f, c.getGreen / 256.0f, c.getBlue / 256.0f, c.getAlpha / 256.0f)
+
+	def drawStart() =
 	{
 		GlStateManager.bindTexture(texture)
 		GL11.glBegin(GL11.GL_QUADS)
-		GL11.glColor3f(color.getRed / 256.0f, color.getGreen / 256.0f, color.getBlue / 256.0f)
+	}
+
+	def drawChar(char: Char, x: Int, y: Int) =
+	{
+		val texCoord = fontMap(char)
+
+		val x1: Float = x
+		val y1: Float = y
+		val x2: Float = x + texCoord.width
+		val y2: Float = y + texCoord.height
+
+		val u1: Float = texCoord.x + 1
+		val v1: Float = texCoord.y + 1
+		val u2: Float = texCoord.x + texCoord.width + 1
+		val v2: Float = texCoord.y + texCoord.height + 1
+
+		GL11.glTexCoord2f(u1 / TextureWidth, v1 / TextureHeight); GL11.glVertex2f(x1, y1)
+		GL11.glTexCoord2f(u1 / TextureWidth, v2 / TextureHeight); GL11.glVertex2f(x1, y2)
+		GL11.glTexCoord2f(u2 / TextureWidth, v2 / TextureHeight); GL11.glVertex2f(x2, y2)
+		GL11.glTexCoord2f(u2 / TextureWidth, v1 / TextureHeight); GL11.glVertex2f(x2, y1)
+
+		x + texCoord.width
+	}
+
+	def drawRect(char: Char, x: Int, y: Int, color: Color) =
+	{
+		val texCoord = fontMap(char)
+
+		val x1: Float = x
+		val y1: Float = y
+		val x2: Float = x + texCoord.width
+		val y2: Float = y + texCoord.height
+
+		drawEnd()
+		GlStateManager.disableTexture2D()
+		GL11.glBegin(GL11.GL_QUADS)
+		GL11.glColor4f(color.getRed / 256.0f, color.getGreen / 256.0f, color.getBlue / 256.0f, color.getAlpha / 256.0f)
+		GL11.glVertex2f(x1, y1)
+		GL11.glVertex2f(x1, y2)
+		GL11.glVertex2f(x2, y2)
+		GL11.glVertex2f(x2, y1)
+		GL11.glEnd()
+		GlStateManager.enableTexture2D()
+		drawStart()
+	}
+
+	def drawString(string: String, x: Int, y: Int, color: Color) =
+	{
+		drawStart()
+		drawColor(color)
 
 		var xCoord = x
-		for (ch <- string)
-		{
-			val drawX = xCoord
-			val texCoord = fontMap(ch)
+		for (char <- string)
+			xCoord = drawChar(char, xCoord, y)
 
-			xCoord += texCoord.width
-			drawCharTexture(drawX, y, drawX + texCoord.width, y + texCoord.height,
-				texCoord.x + 1, texCoord.y + 1, texCoord.x + texCoord.width + 1, texCoord.y + texCoord.height + 1)
-		}
-
-		GL11.glEnd()
+		drawEnd()
 		xCoord
 	}
 
@@ -125,13 +170,5 @@ class TrueTypeFont(val font: Font)
 		GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE)
 		GLU.gluBuild2DMipmaps(GL11.GL_TEXTURE_2D, GL11.GL_RGBA8, TextureWidth, TextureHeight,
 			GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixels.put(buffer).flip().asInstanceOf[ByteBuffer])
-	}
-
-	private def drawCharTexture(x1: Float, y1: Float, x2: Float, y2: Float, u1: Float, v1: Float, u2: Float, v2: Float) =
-	{
-		GL11.glTexCoord2f(u1 / TextureWidth, v1 / TextureHeight); GL11.glVertex2f(x1, y1)
-		GL11.glTexCoord2f(u1 / TextureWidth, v2 / TextureHeight); GL11.glVertex2f(x1, y2)
-		GL11.glTexCoord2f(u2 / TextureWidth, v2 / TextureHeight); GL11.glVertex2f(x2, y2)
-		GL11.glTexCoord2f(u2 / TextureWidth, v1 / TextureHeight); GL11.glVertex2f(x2, y1)
 	}
 }

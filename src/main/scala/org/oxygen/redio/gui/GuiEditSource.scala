@@ -34,7 +34,15 @@ class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEdi
 		}
 		else
 		{
-			loaded = true
+			var name = ""
+			var script = ""
+
+			if (loaded)
+			{
+				name = textName.getText
+				script = textSource.text
+			}
+
 			textName = new GuiTextField(Constants.Gui.EditSource.TEXT_NAME, fontRendererObj, 35, height - 25, 100, 20)
 			textSource = new GuiTextBox(Constants.Gui.EditSource.TEXT_SOURCE, 5, 5, width - 10, height - 35)
 			buttonDownload = new GuiButton(Constants.Gui.EditSource.BTN_WRITE, width - 60, height - 25, 50, 20, I18n.format("gui.write"))
@@ -43,8 +51,17 @@ class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEdi
 			buttonDownload.enabled = false
 			textName.setMaxStringLength(16)
 
-			textName.setText(programmer.name)
-			textSource.text = programmer.script
+			if (loaded)
+			{
+				textName.setText(name)
+				textSource.text = script
+			}
+			else
+			{
+				loaded = true
+				textName.setText(programmer.name)
+				textSource.text = programmer.script
+			}
 		}
 	}
 
@@ -123,6 +140,8 @@ class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEdi
 
 		buttonDownload.enabled = !textName.getText.isEmpty
 		drawString(fontRendererObj, I18n.format("gui.name"), 5, height - 19, 0xffffffff)
+		drawString(fontRendererObj, textSource.clipX + "x" + textSource.clipY + "  " +
+			(textSource.cursorY + 1) + ":" + (textSource.cursorX + 1), 150, height - 19, 0xffffffff)
 	}
 
 	override def actionPerformed(button: GuiButton) = if (button.enabled) button.id match

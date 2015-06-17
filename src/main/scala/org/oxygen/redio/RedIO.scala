@@ -149,7 +149,8 @@ object RedIO
 			registerBlockItem(BlockProcessor, Constants.Meta.DAMAGED, "redio:processor_damaged")
 
 			/* items */
-			ModelLoader.setCustomModelResourceLocation(ItemMemory, 0, new ModelResourceLocation("redio:memory", "inventory"))
+			ModelLoader.setCustomModelResourceLocation(ItemMemory,
+				Constants.Meta.NORMAL, new ModelResourceLocation("redio:memory", "inventory"))
 		}
 	}
 

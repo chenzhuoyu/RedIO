@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.{GlStateManager, OpenGlHelper, RenderHelper
 import net.minecraft.inventory.{Container, Slot}
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumChatFormatting
-import org.lwjgl.input.Keyboard
 import org.oxygen.redio.common.Utils
 
 class GuiBase(val container: Container) extends GuiContainer(container)
@@ -81,14 +80,14 @@ class GuiBase(val container: Container) extends GuiContainer(container)
 			if (slot.canBeHovered && isMouseInSlot(slot, mouseX, mouseY))
 			{
 				theSlot.set(this, item)
-				GlStateManager.disableLighting()
 				GlStateManager.disableDepth()
+				GlStateManager.disableLighting()
 				GlStateManager.colorMask(true, true, true, false)
 				drawGradientRect(slot.xDisplayPosition, slot.yDisplayPosition,
-					slot.xDisplayPosition + 16, slot.yDisplayPosition + 16, -2130706433, -2130706433)
+					slot.xDisplayPosition + 16, slot.yDisplayPosition + 16, 0x80ffffff, 0x80ffffff)
 				GlStateManager.colorMask(true, true, true, true)
-				GlStateManager.enableLighting()
 				GlStateManager.enableDepth()
+				GlStateManager.enableLighting()
 			}
 		}
 
@@ -237,7 +236,7 @@ class GuiBase(val container: Container) extends GuiContainer(container)
 							{
 								handleMouseClick(slot, slotNum, button, 4)
 							}
-							else if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+							else if (GuiScreen.isShiftKeyDown)
 							{
 								if (slot == null || !slot.getHasStack)
 									shiftClickedSlot.set(this, null)
