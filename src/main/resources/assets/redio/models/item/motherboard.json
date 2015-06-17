@@ -1,12 +1,9 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "redio:blocks/cable/wwnn"
+        "layer0": "redio:items/motherboard"
     },
     "display": {
-        "gui": {
-            "rotation": [0, 0, 90]
-        },
         "thirdperson": {
             "scale": [0.55, 0.55, 0.55],
             "rotation": [90, 180, 0],

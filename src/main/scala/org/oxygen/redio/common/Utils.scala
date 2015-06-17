@@ -118,7 +118,7 @@ object Utils
 			redstone.getValue(BlockRedstoneWire.POWER).asInstanceOf[Int] else 0)
 	}
 
-	def addCraftingRecipe(result: Item, count: Int, meta: Int, recipe: Item*): Unit =
+	def addCraftingRecipe(result: Item, count: Int, meta: Int, recipe: Object*): Unit =
 	{
 		if (recipe.length == 9)
 		{
@@ -126,7 +126,7 @@ object Utils
 			var pattern = ""
 
 			val args = mutable.ArrayBuilder.make[Any]()
-			val mapping = mutable.HashMap[Item, Char]()
+			val mapping = mutable.HashMap[Object, Char]()
 
 			for (value <- recipe) value match
 			{

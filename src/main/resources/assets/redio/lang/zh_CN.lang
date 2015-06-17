@@ -15,5 +15,10 @@ tile.processor.intact.name=处理器
 tile.processor.damaged.name=损坏的处理器
 
 item.memory.name=程序卡
+item.screen.name=屏幕
+item.socket.name=通用总线插口
+item.keyboard.name=键盘
+item.motherboard.name=主板
+item.compute_core.name=计算核心
 
 itemGroup.RedStone IO=RedStone IO

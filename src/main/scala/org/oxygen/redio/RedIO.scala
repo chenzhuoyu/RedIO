@@ -6,7 +6,7 @@ import net.minecraft.client.resources.IReloadableResourceManager
 import net.minecraft.client.resources.model.{ModelBakery, ModelResourceLocation}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.{Blocks, Items}
-import net.minecraft.item.Item
+import net.minecraft.item.{ItemStack, Item}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.tileentity.TileEntity
@@ -24,7 +24,7 @@ import org.apache.logging.log4j.LogManager
 import org.oxygen.redio.blocks._
 import org.oxygen.redio.common.{Constants, Utils}
 import org.oxygen.redio.gui.GuiHandler
-import org.oxygen.redio.items.{ItemHeatSink, ItemMemory, ItemProcessor}
+import org.oxygen.redio.items._
 import org.oxygen.redio.runtime.ScriptEngine
 import org.oxygen.redio.tileentities.{TileEntityPort, TileEntityProcessor, TileEntityProgrammer}
 
@@ -33,6 +33,15 @@ object RedIO
 {
 	val logger = LogManager.getLogger("RedIO")
 	val player = Utils.getPrivateField(classOf[NetworkDispatcher], "player")
+
+	@SideOnly(Side.CLIENT)
+	def registerItem(item: Item, meta: Int, variant: String) =
+	{
+		val resource = new ModelResourceLocation(variant, "inventory")
+
+		ModelBakery.addVariantName(item, variant)
+		ModelLoader.setCustomModelResourceLocation(item, meta, resource)
+	}
 
 	@SideOnly(Side.CLIENT)
 	def registerBlockItem(block: Block, meta: Int, variant: String) =
@@ -59,6 +68,11 @@ object RedIO
 
 		/* items */
 		GameRegistry.registerItem(ItemMemory, "memory")
+		GameRegistry.registerItem(ItemScreen, "screen")
+		GameRegistry.registerItem(ItemSocket, "socket")
+		GameRegistry.registerItem(ItemKeyboard, "keyboard")
+		GameRegistry.registerItem(ItemMotherboard, "motherboard")
+		GameRegistry.registerItem(ItemComputeCore, "compute_core")
 
 		/* normal blocks */
 		GameRegistry.registerBlock(BlockPort, "port")
@@ -82,9 +96,6 @@ object RedIO
 		NetworkRegistry.INSTANCE.newEventDrivenChannel(Constants.Gui.EditSource.NAME).register(this)
 
 		/* recipes */
-		val ironBars = Item.getItemFromBlock(Blocks.iron_bars)
-		val redstoneBlock = Item.getItemFromBlock(Blocks.redstone_block)
-
 		Utils.addCraftingRecipe(
 			ItemMemory, 1,
 			Constants.Meta.NORMAL,
@@ -93,32 +104,60 @@ object RedIO
 			null          , Items.redstone, null          )
 
 		Utils.addCraftingRecipe(
-			Item.getItemFromBlock(BlockPort), 1,
+			ItemScreen, 1,
 			Constants.Meta.NORMAL,
-			Items.iron_ingot, Items.repeater, Items.iron_ingot,
-			Items.iron_ingot, redstoneBlock , Items.iron_ingot,
-			Items.iron_ingot, Items.repeater, Items.iron_ingot)
+			Items.redstone   , Items.glowstone_dust, new ItemStack(Items.dye, 1, 4),
+			Items.redstone   , Items.glowstone_dust, new ItemStack(Items.dye, 1, 4),
+			Blocks.glass_pane, Blocks.glass_pane   , Blocks.glass_pane             )
 
 		Utils.addCraftingRecipe(
-			Item.getItemFromBlock(BlockPort), 1,
+			ItemSocket, 2,
 			Constants.Meta.NORMAL,
-			Items.iron_ingot, Items.iron_ingot, Items.iron_ingot,
-			Items.repeater  , redstoneBlock   , Items.repeater  ,
+			null          , null          , null          ,
+			Items.redstone, Items.redstone, Items.redstone,
+			Items.repeater, Items.repeater, Items.repeater)
+
+		Utils.addCraftingRecipe(
+			ItemKeyboard, 1,
+			Constants.Meta.NORMAL,
+			Blocks.stone_button, Blocks.stone_button, Blocks.stone_button,
+			Blocks.stone_button, Blocks.stone_button, Blocks.stone_button,
+			Items.iron_ingot   , Items.iron_ingot   , Items.iron_ingot   )
+
+		Utils.addCraftingRecipe(
+			ItemMotherboard, 1,
+			Constants.Meta.NORMAL,
+			null            , null            , null            ,
+			Items.redstone  , ItemComputeCore , Items.redstone  ,
 			Items.iron_ingot, Items.iron_ingot, Items.iron_ingot)
 
 		Utils.addCraftingRecipe(
-			Item.getItemFromBlock(BlockCable), 9,
+			ItemComputeCore, 1,
 			Constants.Meta.NORMAL,
-			ironBars, Items.redstone, ironBars,
-			ironBars, Items.redstone, ironBars,
-			ironBars, Items.redstone, ironBars)
+			Items.comparator, Items.repeater       , Items.comparator,
+			Items.repeater  , Blocks.redstone_block, Items.repeater  ,
+			Items.comparator, Items.repeater       , Items.comparator)
 
 		Utils.addCraftingRecipe(
-			Item.getItemFromBlock(BlockCable), 9,
+			Item.getItemFromBlock(BlockPort), 1,
 			Constants.Meta.NORMAL,
-			ironBars      , ironBars      , ironBars      ,
-			Items.redstone, Items.redstone, Items.redstone,
-			ironBars      , ironBars      , ironBars      )
+			Items.iron_ingot, ItemSocket     , Items.iron_ingot,
+			ItemSocket      , ItemMotherboard, ItemSocket      ,
+			Items.iron_ingot, ItemSocket     , Items.iron_ingot)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockCable), 3,
+			Constants.Meta.NORMAL,
+			Items.redstone, Blocks.iron_bars, Items.redstone,
+			Items.redstone, Blocks.iron_bars, Items.redstone,
+			Items.redstone, Blocks.iron_bars, Items.redstone)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockCable), 3,
+			Constants.Meta.NORMAL,
+			Items.redstone  , Items.redstone  , Items.redstone  ,
+			Blocks.iron_bars, Blocks.iron_bars, Blocks.iron_bars,
+			Items.redstone  , Items.redstone  , Items.redstone  )
 
 		Utils.addCraftingRecipe(
 			Item.getItemFromBlock(BlockHeatSink), 1,
@@ -134,9 +173,31 @@ object RedIO
 			null            , Items.gold_ingot, null            ,
 			Items.gold_ingot, Items.gold_ingot, Items.gold_ingot)
 
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockProcessor), 1,
+			Constants.Meta.NORMAL,
+			Items.iron_ingot, BlockCable     , Items.iron_ingot,
+			BlockCable      , ItemComputeCore, BlockCable      ,
+			Items.iron_ingot, ItemSocket     , Items.iron_ingot)
+
+		Utils.addCraftingRecipe(
+			Item.getItemFromBlock(BlockProgrammer), 1,
+			Constants.Meta.NORMAL,
+			Items.iron_ingot, ItemScreen     , Items.iron_ingot,
+			null            , ItemMotherboard, null            ,
+			Items.iron_ingot, ItemKeyboard   , Items.iron_ingot)
+
 		/* client item models */
 		if (event.getSide.isClient)
 		{
+			/* items */
+			registerItem(ItemMemory, Constants.Meta.NORMAL, "redio:memory")
+			registerItem(ItemScreen, Constants.Meta.NORMAL, "redio:screen")
+			registerItem(ItemSocket, Constants.Meta.NORMAL, "redio:socket")
+			registerItem(ItemKeyboard, Constants.Meta.NORMAL, "redio:keyboard")
+			registerItem(ItemMotherboard, Constants.Meta.NORMAL, "redio:motherboard")
+			registerItem(ItemComputeCore, Constants.Meta.NORMAL, "redio:compute_core")
+
 			/* normal blocks */
 			registerBlockItem(BlockPort, Constants.Meta.NORMAL, "redio:port")
 			registerBlockItem(BlockCable, Constants.Meta.NORMAL, "redio:cable")
@@ -147,10 +208,6 @@ object RedIO
 			registerBlockItem(BlockHeatSink, Constants.Meta.DAMAGED, "redio:heatsink_gold")
 			registerBlockItem(BlockProcessor, Constants.Meta.NORMAL, "redio:processor_intact")
 			registerBlockItem(BlockProcessor, Constants.Meta.DAMAGED, "redio:processor_damaged")
-
-			/* items */
-			ModelLoader.setCustomModelResourceLocation(ItemMemory,
-				Constants.Meta.NORMAL, new ModelResourceLocation("redio:memory", "inventory"))
 		}
 	}
 

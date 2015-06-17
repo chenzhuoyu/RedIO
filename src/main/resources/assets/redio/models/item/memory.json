@@ -4,12 +4,9 @@
         "layer0": "redio:items/memory"
     },
     "display": {
-        "gui": {
-            "rotation": [0, 0, 90]
-        },
         "thirdperson": {
             "scale": [0.55, 0.55, 0.55],
-            "rotation": [-90, 0, 0],
+            "rotation": [90, 180, 0],
             "translation": [0, 1, -3]
         },
         "firstperson": {

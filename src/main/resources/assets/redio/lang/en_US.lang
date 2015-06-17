@@ -15,5 +15,10 @@ tile.processor.intact.name=Processor
 tile.processor.damaged.name=Processor (damaged)
 
 item.memory.name=Memory
+item.screen.name=Screen
+item.socket.name=Socket
+item.keyboard.name=Keyboard
+item.motherboard.name=Motherboard
+item.compute_core.name=Compute core
 
 itemGroup.RedStone IO=RedStone IO
