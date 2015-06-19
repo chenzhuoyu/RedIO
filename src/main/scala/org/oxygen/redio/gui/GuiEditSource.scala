@@ -6,12 +6,14 @@ import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer
 import net.minecraft.network.play.client.C17PacketCustomPayload
 import net.minecraft.tileentity.TileEntity
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.lwjgl.input.{Keyboard, Mouse}
 import org.oxygen.redio.common.Constants
 import org.oxygen.redio.gui.components.GuiTextBox
 import org.oxygen.redio.gui.containers.ContainerEditSource
 import org.oxygen.redio.tileentities.TileEntityProgrammer
 
+@SideOnly(Side.CLIENT)
 class GuiEditSource(val tileEntity: TileEntity) extends GuiBase(new ContainerEditSource(tileEntity))
 {
 	private var loaded: Boolean = false

@@ -9,8 +9,10 @@ import net.minecraft.client.renderer.{GlStateManager, OpenGlHelper, RenderHelper
 import net.minecraft.inventory.{Container, Slot}
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumChatFormatting
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.oxygen.redio.common.Utils
 
+@SideOnly(Side.CLIENT)
 class GuiBase(val container: Container) extends GuiContainer(container)
 {
 	private val theSlot = Utils.getPrivateField(classOf[GuiContainer], "theSlot")

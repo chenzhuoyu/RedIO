@@ -3,6 +3,7 @@ package org.oxygen.redio.gui.components
 import java.awt.Color
 
 import net.minecraft.client.gui.{GuiScreen, Gui}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.apache.commons.lang3.StringUtils
 import org.lwjgl.input.Keyboard
 import org.oxygen.redio.MonoFontRenderer
@@ -10,6 +11,7 @@ import org.oxygen.redio.common.Utils
 
 import scala.collection.mutable
 
+@SideOnly(Side.CLIENT)
 class GuiTextBox(val id: Int, val x: Int, val y: Int, val width: Int, val height: Int) extends Gui
 {
 	val lines = mutable.ListBuffer[String]("")

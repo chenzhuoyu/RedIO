@@ -1,7 +1,9 @@
 package org.oxygen.redio.gui.components
 
 import net.minecraft.client.gui.Gui
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
+@SideOnly(Side.CLIENT)
 class GuiScrollBar(val x: Int, val y: Int, val width: Int, val height: Int, val horizontal: Boolean) extends Gui
 {
 	var max = 1.0

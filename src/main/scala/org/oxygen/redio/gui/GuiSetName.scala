@@ -6,10 +6,12 @@ import net.minecraft.client.resources.I18n
 import net.minecraft.network.PacketBuffer
 import net.minecraft.network.play.client.C17PacketCustomPayload
 import net.minecraft.tileentity.TileEntity
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.lwjgl.input.Keyboard
 import org.oxygen.redio.common.Constants
 import org.oxygen.redio.gui.containers.ContainerSetName
 
+@SideOnly(Side.CLIENT)
 class GuiSetName(val tileEntity: TileEntity) extends GuiBase(new ContainerSetName(tileEntity))
 {
 	private var buttonOK: GuiButton = null

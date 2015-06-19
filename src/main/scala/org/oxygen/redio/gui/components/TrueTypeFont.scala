@@ -5,9 +5,11 @@ import java.awt.{Color, Font, Graphics2D}
 import java.nio.ByteBuffer
 
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.glu.GLU
 
+@SideOnly(Side.CLIENT)
 class TrueTypeFont(val font: Font)
 {
 	private class TexCoords(val x: Int, val y: Int, val width: Int, val height: Int) {}

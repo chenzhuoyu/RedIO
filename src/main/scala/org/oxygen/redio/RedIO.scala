@@ -35,6 +35,13 @@ object RedIO
 	val player = Utils.getPrivateField(classOf[NetworkDispatcher], "player")
 
 	@SideOnly(Side.CLIENT)
+	def registerFont() =
+	{
+		Minecraft.getMinecraft.getResourceManager.asInstanceOf[IReloadableResourceManager].registerReloadListener(MonoFontRenderer)
+		Minecraft.getMinecraft.refreshResources()
+	}
+
+	@SideOnly(Side.CLIENT)
 	def registerItem(item: Item, meta: Int, variant: String) =
 	{
 		val resource = new ModelResourceLocation(variant, "inventory")
@@ -61,10 +68,6 @@ object RedIO
 
 		/* method/field name mapper */
 		Constants.NameMapper.init()
-
-		/* font renderer */
-		Minecraft.getMinecraft.getResourceManager.asInstanceOf[IReloadableResourceManager].registerReloadListener(MonoFontRenderer)
-		Minecraft.getMinecraft.refreshResources()
 
 		/* items */
 		GameRegistry.registerItem(ItemMemory, "memory")
@@ -187,9 +190,12 @@ object RedIO
 			null            , ItemMotherboard, null            ,
 			Items.iron_ingot, ItemKeyboard   , Items.iron_ingot)
 
-		/* client item models */
+		/* client side stuffs */
 		if (event.getSide.isClient)
 		{
+			/* font renderer */
+			registerFont()
+
 			/* items */
 			registerItem(ItemMemory, Constants.Meta.NORMAL, "redio:memory")
 			registerItem(ItemScreen, Constants.Meta.NORMAL, "redio:screen")
