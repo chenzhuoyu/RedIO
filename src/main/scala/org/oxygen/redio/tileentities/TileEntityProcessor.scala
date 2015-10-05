@@ -86,7 +86,11 @@ class TileEntityProcessor extends TileEntity with Executor
 		{
 			try
 			{
-				onSysTick()
+				onSysTick() match
+				{
+					case x: RedObject => x.unref()
+					case _ =>
+				}
 			} catch
 			{
 				case e: RuntimeException =>
@@ -99,7 +103,6 @@ class TileEntityProcessor extends TileEntity with Executor
 			case null =>
 				ejectMemory()
 				RedIO.logger.error("Execution timeout in processor \"" + name + "\", memory ejected.")
-				null
 		}
 	}
 
