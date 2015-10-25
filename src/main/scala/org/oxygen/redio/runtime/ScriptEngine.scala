@@ -4,7 +4,7 @@ import java.util.concurrent.{Callable, Executors, TimeUnit, TimeoutException}
 
 import org.oxygen.redio.RedIO
 import org.oxygen.redio.common.Utils
-import org.oxygen.redscript.Engine
+import org.oxygen.redscript.{Printer, Engine}
 
 object ScriptEngine
 {
@@ -35,6 +35,12 @@ object ScriptEngine
 		}
 	}
 
+    object PrinterImpl extends Printer
+    {
+        override def print(text: String): Unit = RedIO.logger.info(text)
+        override def println(text: String): Unit = RedIO.logger.info(text)
+    }
+
 	def init() =
 	{
 		RedIO.logger.info("Starting script engine for " + System.getProperty("os.name"))
@@ -47,5 +53,6 @@ object ScriptEngine
 		}
 
 		Engine.init(Array("redio"))
+        Engine.printers += PrinterImpl
 	}
 }

@@ -2,7 +2,7 @@ package org.oxygen.redio.gui.components
 
 import java.awt.Color
 
-import net.minecraft.client.gui.{GuiScreen, Gui}
+import net.minecraft.client.gui.{Gui, GuiScreen}
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.apache.commons.lang3.StringUtils
 import org.lwjgl.input.Keyboard

@@ -4,7 +4,7 @@ import java.util
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.inventory.GuiContainer
-import net.minecraft.client.gui.{GuiScreen, GuiButton, GuiLabel}
+import net.minecraft.client.gui.{GuiButton, GuiLabel, GuiScreen}
 import net.minecraft.client.renderer.{GlStateManager, OpenGlHelper, RenderHelper}
 import net.minecraft.inventory.{Container, Slot}
 import net.minecraft.item.ItemStack

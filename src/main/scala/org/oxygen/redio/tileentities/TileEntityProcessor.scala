@@ -1,13 +1,16 @@
 package org.oxygen.redio.tileentities
 
 import net.minecraft.block.state.IBlockState
+import net.minecraft.command.CommandResultStats.Type
+import net.minecraft.command.ICommandSender
+import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity
 import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.{BlockPos, EnumParticleTypes}
+import net.minecraft.util._
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
@@ -19,7 +22,7 @@ import org.oxygen.redio.runtime._
 import org.oxygen.redscript.Engine
 import org.oxygen.redscript.objects.RedObject
 
-class TileEntityProcessor extends TileEntity with Executor
+class TileEntityProcessor extends TileEntity with Executor with ICommandSender
 {
 	var heat: Long = 0
 	var name: String = ""
@@ -27,8 +30,8 @@ class TileEntityProcessor extends TileEntity with Executor
 	var inside: ItemStack = null
 
 	val context: Context = new Context(this)
-	var onSysTick: RedObject = null
 	var onMessage: RedObject = null
+    var onTrigger: RedObject = null
 
 	def rename(newName: String) =
 	{
@@ -39,14 +42,40 @@ class TileEntityProcessor extends TileEntity with Executor
 		}
 	}
 
+    def trigger(state: Boolean) =
+    {
+        if (onTrigger != null) execute
+        {
+            try
+            {
+                onTrigger(state) match
+                {
+                    case x: RedObject => x.unref()
+                    case _ =>
+                }
+            } catch
+                {
+                    case e: RuntimeException =>
+                        ejectMemory()
+                        RedIO.logger.error("Exception in processor \"" + name + "\", memory ejected.\n" + e.getMessage)
+                }
+        } match
+        {
+            case () =>
+            case null =>
+                ejectMemory()
+                RedIO.logger.error("Execution timeout in processor \"" + name + "\", memory ejected.")
+        }
+    }
+
 	def ejectMemory() =
 	{
 		if (inside != null)
 		{
 			if (!worldObj.isRemote)
 			{
-				if (onSysTick != null) onSysTick.unref()
-				if (onMessage != null) onMessage.unref()
+                if (onMessage != null) onMessage.unref()
+				if (onTrigger != null) onTrigger.unref()
 
 				val dx = worldObj.rand.nextDouble() * 0.7 + 0.15
 				val dy = worldObj.rand.nextDouble() * 0.7 + 0.66
@@ -59,8 +88,8 @@ class TileEntityProcessor extends TileEntity with Executor
 
 			script = ""
 			inside = null
-			onSysTick = null
 			onMessage = null
+            onTrigger = null
 		}
 	}
 
@@ -80,32 +109,6 @@ class TileEntityProcessor extends TileEntity with Executor
 		}
 	}
 
-	def triggerSysTick() =
-	{
-		if (onSysTick != null) execute
-		{
-			try
-			{
-				onSysTick() match
-				{
-					case x: RedObject => x.unref()
-					case _ =>
-				}
-			} catch
-			{
-				case e: RuntimeException =>
-					ejectMemory()
-					RedIO.logger.error("Exception in processor \"" + name + "\", memory ejected.\n" + e.getMessage)
-			}
-		} match
-		{
-			case () =>
-			case null =>
-				ejectMemory()
-				RedIO.logger.error("Execution timeout in processor \"" + name + "\", memory ejected.")
-		}
-	}
-
 	def dispatchPacket(source: String, packet: PacketType): Any = packet match
 	{
 		case Input => onMessage(source, null)
@@ -121,7 +124,9 @@ class TileEntityProcessor extends TileEntity with Executor
 				case f: RedObject => f.isCallable match
 				{
 					case true => f
-					case false => null
+					case false =>
+                        f.unref()
+                        null
 				}
 
 				case _ => null
@@ -139,12 +144,12 @@ class TileEntityProcessor extends TileEntity with Executor
 			val code = Engine.compile(script)
 			val module = code.eval
 
-			if (onSysTick != null) onSysTick.unref()
 			if (onMessage != null) onMessage.unref()
+            if (onTrigger != null) onTrigger.unref()
 
 			module.setAttrib("Context", context)
-			onSysTick = getCallback(module, "onSysTick")
 			onMessage = getCallback(module, "onMessage")
+            onTrigger = getCallback(module, "onTrigger")
 
 			code.unref()
 			module.unref()
@@ -154,7 +159,25 @@ class TileEntityProcessor extends TileEntity with Executor
 				ejectMemory()
 				RedIO.logger.error("Exception in processor \"" + name + "\", memory ejected.\n" + e.getMessage)
 		}
-	}
+	} match
+    {
+        case () =>
+        case null =>
+            ejectMemory()
+            RedIO.logger.error("Execution timeout in processor \"" + name + "\", memory ejected.")
+    }
+
+    override def getName: String = name
+    override def getPosition: BlockPos = pos
+    override def getEntityWorld: World = worldObj
+    override def getDisplayName: IChatComponent = new ChatComponentText(name)
+    override def getPositionVector: Vec3 = new Vec3(pos.getX + 0.5d, pos.getY + 0.5d, pos.getZ + 0.5d)
+    override def getCommandSenderEntity: Entity = null
+
+    override def canUseCommand(permLevel: Int, commandName: String): Boolean = true
+    override def addChatMessage(message: IChatComponent): Unit = ()
+    override def setCommandStat(`type`: Type, amount: Int): Unit = ()
+    override def sendCommandFeedback(): Boolean = false
 
 	override def writeToNBT(nbt: NBTTagCompound) =
 	{

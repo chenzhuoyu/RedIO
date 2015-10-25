@@ -6,7 +6,7 @@ import net.minecraft.client.resources.IReloadableResourceManager
 import net.minecraft.client.resources.model.{ModelBakery, ModelResourceLocation}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.{Blocks, Items}
-import net.minecraft.item.{ItemStack, Item}
+import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.tileentity.TileEntity

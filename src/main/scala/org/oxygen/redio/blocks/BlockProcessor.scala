@@ -36,10 +36,8 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 		val te = worldIn.getTileEntity(pos).asInstanceOf[TileEntityProcessor]
 		val heatsink = worldIn.getBlockState(pos.up())
 		var isDamaged = state.getValue(DAMAGED).asInstanceOf[Boolean]
-		val isWorking = (te.inside != null) && (worldIn.isBlockIndirectlyGettingPowered(pos) > 0)
-
-		if (isWorking)
-			te.triggerSysTick()
+		val isWorking = state.getValue(WORKING).asInstanceOf[Boolean]
+        val wasDamaged = isDamaged
 
 		if (!isWorking)
 			te.heat -= 1
@@ -72,8 +70,10 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 		}
 		else
 		{
-			worldIn.setBlockState(pos, state.withProperty(DAMAGED, isDamaged).withProperty(WORKING, isWorking))
-			worldIn.scheduleUpdate(pos, this, tickRate(worldIn))
+            if (isDamaged && !wasDamaged)
+                worldIn.setBlockState(pos, state.withProperty(DAMAGED, isDamaged))
+
+            worldIn.scheduleUpdate(pos, this, tickRate(worldIn))
 			worldIn.updateComparatorOutputLevel(pos, this)
 		}
 	}
@@ -95,7 +95,7 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 		.withProperty(WORKING, (meta & Constants.Meta.WORKING) == Constants.Meta.WORKING)
 		.withProperty(FACING, EnumFacing.getHorizontal(meta & Constants.Meta.FACING_MASK))
 
-	override def tickRate(worldIn: World): Int = 1
+	override def tickRate(worldIn: World): Int = 2
 	override def createBlockState: BlockState = new BlockState(this, FACING, DAMAGED, WORKING)
 	override def createNewTileEntity(worldIn: World, meta: Int): TileEntity = new TileEntityProcessor
 	override def hasComparatorInputOverride: Boolean = true
@@ -142,9 +142,8 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 	override def onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) =
 	{
 		val facing = EnumFacing.getHorizontal(Utils.getPlayerFacing(placer))
-		val isPowered = worldIn.isBlockIndirectlyGettingPowered(pos) > 0
 
-		worldIn.setBlockState(pos, state.withProperty(FACING, facing).withProperty(WORKING, isPowered))
+		worldIn.setBlockState(pos, state.withProperty(FACING, facing))
 		worldIn.scheduleUpdate(pos, this, tickRate(worldIn))
 		worldIn.updateComparatorOutputLevel(pos, this)
 
@@ -156,7 +155,15 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 	override def onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState,
 		playerIn: EntityPlayer, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean =
 	{
-		worldIn.getTileEntity(pos).asInstanceOf[TileEntityProcessor].ejectMemory()
+        val te = worldIn.getTileEntity(pos).asInstanceOf[TileEntityProcessor]
+
+        if (te.inside != null)
+        {
+            te.ejectMemory()
+            worldIn.setBlockState(pos, state.withProperty(WORKING, false))
+            worldIn.scheduleUpdate(pos, this, tickRate(worldIn))
+        }
+
 		(playerIn.getHeldItem == null) || (playerIn.getHeldItem.getItem != ItemMemory)
 	}
 
@@ -164,11 +171,14 @@ object BlockProcessor extends BlockBase(Material.rock) with ITileEntityProvider 
 	{
 		if (!worldIn.isRemote)
 		{
-			val isPowered = worldIn.isBlockIndirectlyGettingPowered(pos) > 0
+            val te = worldIn.getTileEntity(pos).asInstanceOf[TileEntityProcessor]
+			val isPowered = te.inside != null && worldIn.isBlockIndirectlyGettingPowered(pos) > 0
 			val wasPowered = state.getValue(WORKING).asInstanceOf[Boolean]
 
-			if (isPowered && !wasPowered)
+			if (isPowered != wasPowered)
 			{
+                te.trigger(isPowered)
+                worldIn.setBlockState(pos, state.withProperty(WORKING, isPowered))
 				worldIn.scheduleUpdate(pos, this, tickRate(worldIn))
 				worldIn.updateComparatorOutputLevel(pos, this)
 			}
